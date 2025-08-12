@@ -1,4 +1,4 @@
-package com.exemplo.demo.model;
+package model;
 
 public class Cliente {
     private String nome;
