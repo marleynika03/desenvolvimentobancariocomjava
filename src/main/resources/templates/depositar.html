@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<meta charset="UTF-8">
+<head>Depositar</head>
+<Body>
+<div th:if="${sucesso}" class="alert alert-success">
+    <span th:text="${mensagem}"></span>
+</div>
+<div th:if="${erro}" class="alert alert-danger">
+    <span th:text="$mensagem"></span>
+</div>
+
+<form method="post" action="/depositar">
+    <input type="number" name="valor" step="0.01" min="0.01" required>
+    <button type="submit">Depositar</button>
+</form>
+
+</Body>
+</html>

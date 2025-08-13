@@ -12,6 +12,7 @@ public class Cliente {
 
     private String nome;
     private String sobrenome;
+    @Column(length = 11, unique = true, nullable = false)
     private String cpf;
     private double saldo;
 
@@ -24,6 +25,15 @@ public class Cliente {
         this.saldo = 0.0;
     }
 
+    public void adicionarSaldo(double valor) {
+        if (valor > 0) {
+            saldo += valor;
+            System.out.println("Depósito de R$" + valor + "Realizado com sucesso");
+        } else {
+            System.out.println("Valor do depósito inválido");
+        }
+    }
+
     public Long getId() { return id; }
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
@@ -33,4 +43,6 @@ public class Cliente {
     public void setCpf(String cpf) { this.cpf = cpf; }
     public Double getSaldo() { return saldo; }
     public void setSaldo(Double saldo) { this.saldo = saldo; }
+    public void depositar(Double valor) {
+    }
 }
