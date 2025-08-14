@@ -28,14 +28,18 @@ public class ClienteController {
     public String criarCliente(@RequestParam String nome,
                                @RequestParam String sobrenome,
                                @RequestParam String cpf,
+                               @RequestParam String email,
+                               @RequestParam String senha,
                                Model model) {
         // Adiciona os dados ao modelo para possível uso na view
         model.addAttribute("nome", nome);
         model.addAttribute("sobrenome", sobrenome);
         model.addAttribute("cpf", cpf);
+        model.addAttribute("senha", senha);
+        model.addAttribute("email", email);
 
         // Cria e salva o novo cliente no banco de dados
-        Cliente cliente = new Cliente(nome, sobrenome, cpf);
+        Cliente cliente = new Cliente(nome, sobrenome, cpf, email, senha);
         clienteRepository.save(cliente);
 
         return "sucesso";

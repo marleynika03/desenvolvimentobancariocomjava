@@ -15,15 +15,19 @@ public class Cliente {
     @Column(length = 11, unique = true, nullable = false)
     private String cpf;
     private double saldo;
+    private String senha;
+    private String email;
 
     public Cliente() {
     }
 
-    public Cliente(String nome, String sobrenome, String cpf) {
+    public Cliente(String nome, String sobrenome, String cpf, String email, String senha) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.cpf = cpf;
         this.saldo = 0.0;
+        this.senha = senha;
+        this.email = email;
     }
 
     public void adicionarSaldo(double valor) {
@@ -51,6 +55,10 @@ public class Cliente {
     public void setSobrenome(String sobrenome) { this.sobrenome = sobrenome; }
     public String getCpf() { return cpf; }
     public void setCpf(String cpf) { this.cpf = cpf; }
+    public void setEmail(String email) { this.email = email; }
+    public String getEmail() { return email; }
+    public void setSenha(String senha) { this.senha = senha; }
+    public String getSenha() { return senha; }
     public Double getSaldo() { return saldo; }
     public void setSaldo(Double saldo) { this.saldo = saldo; }
     public void depositar(Double valor) {
