@@ -34,6 +34,15 @@ public class Cliente {
         }
     }
 
+    public void sacarSaldo(double valor) {
+        if (valor > 0) {
+            saldo -= valor;
+            System.out.println("Saque de R$" + valor + "Realizado com sucesso");
+        } else {
+            System.out.println("Valor do saque inválido");
+        }
+    }
+
     public Long getId() { return id; }
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }

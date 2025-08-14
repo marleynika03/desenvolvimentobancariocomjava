@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <meta charset="UTF-8">
-<head>Depositar</head>
+<head>Sacar</head>
 <Body>
 <div th:if="${sucesso}" class="alert alert-success">
     <span th:text="${mensagem}"></span>
@@ -10,11 +10,9 @@
     <span th:text="$mensagem"></span>
 </div>
 
-<form th:action="@{'/clientes/depositar/' + ${clienteId}}" method="post">
-
+<form th:action="@{'/clientes/sacar/' + ${clienteId}}" method="post">
     <input type="number" name="valor" step="0.01" min="0.01" required>
-    <button type="submit">Depositar</button>
+    <button type="submit">Sacar</button>
 </form>
-
 </Body>
 </html>

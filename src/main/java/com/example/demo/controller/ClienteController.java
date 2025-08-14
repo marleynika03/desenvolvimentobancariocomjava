@@ -51,41 +51,89 @@ public class ClienteController {
         return ResponseEntity.ok(saldo);
     }
 
-    // Exibe o formulário de depósito para um cliente específico
-    @GetMapping("/depositar/{clienteId}")
-    public String formDepositar(@PathVariable Long clienteId, Model model) {
-        model.addAttribute("clienteId", clienteId); // Passa o ID para a view
-        return "depositar"; // retorna a view de depósito;
+    // Exibe o formulário de saque para um cliente específico
+    @GetMapping("/sacar/{clienteId}")
+    public String formSacar(@PathVariable Long clienteId,
+                            @RequestParam(required = false) String erro,
+                            @RequestParam(required = false) String sucesso,
+                            @RequestParam(required = false) Double valor,
+                            Model model) {
+        model.addAttribute("clienteId", clienteId);
+        if ("true".equals(sucesso)) {
+            model.addAttribute("mensagem", "Saque de R$" + valor + "realizado com sucesso!");
+            model.addAttribute("sucesso", true);
+        } else if ("cliente-nao-encontrando".equals(erro)) {
+            model.addAttribute("mensagem", "Cliente não encontrado!");
+            model.addAttribute("erro", true);
+        } else if ("valor-invalido".equals(erro)) {
+            model.addAttribute("mensagem", "Valor do saque inválido!");
+            model.addAttribute("erro", true);
+        }
+        return "sacar";
     }
 
-    //Processa o formulário de depósito
+    // Processa o formulário de depósito
+    @PostMapping("/sacar/{clienteId}")
+    public String sacarSaldo(@PathVariable Long clienteId,
+                             @RequestParam Double valor) {
+        Cliente cliente = clienteRepository.findById(clienteId).orElse(null);
+
+        if (cliente == null) {
+            return "redirect:/clientes/sacar" + clienteId + "?erro=cliente-nao-encontrado";
+        }
+
+        if (valor != null && valor > 0) {
+            cliente.sacarSaldo(valor);
+            clienteRepository.save(cliente);
+            return "redirect:/clientes/sacar/" + clienteId + "?sucesso=true&valor=" + valor;
+        } else {
+            return "redirect:/clientes/sacar" + clienteId + "?erro=valor-invalido";
+        }
+    }
+
+    // Exibe o formulário de depósito para um cliente específico
+    @GetMapping("/depositar/{clienteId}")
+    public String formDepositar(@PathVariable Long clienteId,
+                                @RequestParam(required = false) String erro,
+                                @RequestParam(required = false) String sucesso,
+                                @RequestParam(required = false) Double valor,
+                                Model model) {
+        model.addAttribute("clienteId", clienteId);
+
+        // Tratamento das mensagens
+        if ("true".equals(sucesso)) {
+            model.addAttribute("mensagem", "Depósito de R$" + valor + " realizado com sucesso!");
+            model.addAttribute("sucesso", true);
+        } else if ("cliente-nao-encontrado".equals(erro)) {
+            model.addAttribute("mensagem", "Cliente não encontrado!");
+            model.addAttribute("erro", true);
+        } else if ("valor-invalido".equals(erro)) {
+            model.addAttribute("mensagem", "Valor do depósito inválido!");
+            model.addAttribute("erro", true);
+        }
+
+        return "depositar";
+    }
+
+    // Processa o formulário de depósito
     @PostMapping("/depositar/{clienteId}")
     public String depositarSaldo(@PathVariable Long clienteId,
-                                 @RequestParam Double valor,
-                                 Model model) {
+                                 @RequestParam Double valor) {
         // Busca o cliente pelo ID
         Cliente cliente = clienteRepository.findById(clienteId).orElse(null);
 
-
         // Verifica se o cliente existe
         if (cliente == null) {
-            model.addAttribute("mensagem", "Cliente não encontrado!");
-            model.addAttribute("erro", true);
-            return "depositar";
+            return "redirect:/clientes/depositar/" + clienteId + "?erro=cliente-nao-encontrado";
         }
 
         // Valida e processa o depósito
         if (valor != null && valor > 0) {
-            cliente.depositar(valor);
+            cliente.adicionarSaldo(valor);
             clienteRepository.save(cliente);
-            model.addAttribute("mensagem", "Depósito de R$" + valor + " Realizado com sucesso");
-            model.addAttribute("sucesso", true);
+            return "redirect:/clientes/depositar/" + clienteId + "?sucesso=true&valor=" + valor;
         } else {
-            model.addAttribute("mensagem", "Valor do depósito inválido");
-            model.addAttribute("erro", true);
+            return "redirect:/clientes/depositar/" + clienteId + "?erro=valor-invalido";
         }
-        return "depositar"; // Retorna para a mesma página com mensagem
     }
 }
-
-
