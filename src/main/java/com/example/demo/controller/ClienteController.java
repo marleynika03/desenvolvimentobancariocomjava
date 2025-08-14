@@ -42,9 +42,9 @@ public class ClienteController {
     }
 
     // Endpoint para consultar o saldo de um cliente
-    @GetMapping("/{id}/saldo")
-    public ResponseEntity<Double> getSaldoCliente(@PathVariable Long id) {
-        Cliente cliente = clienteRepository.findById(id)
+    @GetMapping("/saldo/{clienteId}")
+    public ResponseEntity<Double> getSaldoCliente(@PathVariable Long clienteId) {
+        Cliente cliente = clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
         Double saldo = cliente.getSaldo();

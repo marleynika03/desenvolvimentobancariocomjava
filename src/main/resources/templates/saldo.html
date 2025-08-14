@@ -1,13 +1,32 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Consultar Saldo</title>
+    <meta charset="UTF-8" />
+    <title>Consulta de Saldo</title>
 </head>
 <body>
 <h1>Consulta de Saldo</h1>
-<p th:text="${mensagem}"></p>
 
-<a href="/clientes/criar">Cadastrar novo cliente</a>
+<!-- Mensagens simples -->
+<div th:if="${sucesso}" th:text="${mensagem}"></div>
+<div th:if="${erro}" th:text="${mensagem}"></div>
+
+<!-- Formulário GET para consultar saldo pelo ID -->
+<form th:action="@{/clientes/saldo} + ${clienteId}}" method="get">
+    <label for="clienteId">ID do Cliente:</label>
+    <input id="clienteId" name="clienteId" type="number" min="1" required th:value="${clienteId}" />
+    <button type="submit">Consultar</button>
+</form>
+
+<!-- Resultado -->
+<div th:if="${cliente != null}">
+    <p><strong>ID:</strong> <span th:text="${cliente.id}"></span></p>
+    <p><strong>Nome:</strong> <span th:text="${cliente.nome}"></span></p>
+    <p><strong>Saldo:</strong> R$ <span th:text="${#numbers.formatDecimal(cliente.saldo, 1, 2)}"></span></p>
+</div>
+
+<div th:if="${cliente == null} and ${clienteId} != null">
+    <p>Cliente não encontrado.</p>
+</div>
 </body>
 </html>

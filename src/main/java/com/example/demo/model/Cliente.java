@@ -16,7 +16,8 @@ public class Cliente {
     private String cpf;
     private double saldo;
 
-    public Cliente() {}
+    public Cliente() {
+    }
 
     public Cliente(String nome, String sobrenome, String cpf) {
         this.nome = nome;
